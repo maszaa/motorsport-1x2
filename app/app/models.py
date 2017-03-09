@@ -15,6 +15,7 @@ class Team(models.Model):
 
 class SeasonTeam(Team):
     season = models.ForeignKey(Season, related_name="teams", null=False, blank=False)
+    runningOrder = models.IntegerField(primary_key=True, validators=[greaterThanZero])
 
 class Driver(models.Model):
     name = models.CharField(primary_key=True, max_length=256)
@@ -22,6 +23,7 @@ class Driver(models.Model):
 
 class SeasonDriver(Driver):
     team = models.ForeignKey(SeasonTeam, related_name="drivers", null=False, blank=False)
+    runningOrder = models.IntegerField(null=False, blank=False, validators=[oneOrTwo])
 
 class Round(models.Model):
     roundNumber = models.IntegerField(null=False, blank=False, validators=[greaterThanZero])
@@ -33,7 +35,8 @@ class Competition(models.Model):
 
 class Player(models.Model):
     name = models.CharField(primary_key=True, max_length=256)
-    points = models.IntegerField(null=False, blank=False, validators=[greaterThanZero])
+    qualificationPoints = models.IntegerField(null=False, blank=False, default=0)
+    racePoints = models.IntegerField(null=False, blank=False, default=0)
     competition = models.ForeignKey(Competition, related_name="players", null=False, blank=False)
 
 class Row(models.Model):
@@ -47,5 +50,11 @@ class Row(models.Model):
     row = models.CharField(null=False, blank=False, validators=[rowLengthIsCorrect], max_length=64)
     rowType = models.CharField(null=False, blank=False, choices = ROW_CHOICES, default=RACE, max_length=1)
 
+    class Meta:
+        abstract = True
+
+class RoundRow(Row):
+    roundNumber = models.ForeignKey(Round, related_name="rows", null=False, blank=False)
+
 class PlayerRow(Row):
-    player = models.ForeignKey(Player, related_name="playerRows", null=False, blank=False)
+    player = models.ForeignKey(Player, related_name="rows", null=False, blank=False)
