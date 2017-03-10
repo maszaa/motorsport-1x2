@@ -32,11 +32,15 @@ class Round(models.Model):
 
 class Competition(models.Model):
     season = models.ForeignKey(Season, related_name="competitions", null=False, blank=False)
+    name = models.CharField(null=False, blank=False, max_length=256)
+
+    class Meta:
+        unique_together = (("season", "name"))
 
 class Player(models.Model):
-    name = models.CharField(primary_key=True, max_length=256)
-    qualificationPoints = models.IntegerField(null=False, blank=False, default=0)
-    racePoints = models.IntegerField(null=False, blank=False, default=0)
+    name = models.CharField(unique=True, null=False, blank=False, max_length=256)
+    qualificationPoints = models.IntegerField(null=False, blank=False, default=0, validators=[greaterThanZero])
+    racePoints = models.IntegerField(null=False, blank=False, default=0, validators=[greaterThanZero])
     competition = models.ForeignKey(Competition, related_name="players", null=False, blank=False)
 
 class Row(models.Model):

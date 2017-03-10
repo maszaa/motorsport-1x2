@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from app.views.player import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^player/(?P<id>\d+)/$', PlayerInfo.as_view()),
+    url(r'^player/$', AddPlayer.as_view())
 ]
