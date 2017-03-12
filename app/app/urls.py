@@ -20,6 +20,7 @@ from app.views.serie import *
 from app.views.team import *
 from app.views.driver import *
 from app.views.season import *
+from app.views.documentation import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -29,5 +30,7 @@ urlpatterns = [
     url(r'^api/seasons/', SeasonView.as_view()),
     url(r'^api/player/row/', PlayerRowView.as_view()),
     url(r'^api/player/', PlayerView.as_view()),
+
+    url(r'^documentation/api', DocumentationView.as_view()),
 
 ]
