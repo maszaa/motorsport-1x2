@@ -19,6 +19,7 @@ from app.views.player import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^player/(?P<id>\d+)/$', PlayerInfo.as_view()),
-    url(r'^player/$', AddPlayer.as_view())
+    url(r'^player/row/', PlayerRowView.as_view()),
+    url(r'^player/', PlayerView.as_view()),
+
 ]

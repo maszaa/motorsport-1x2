@@ -60,5 +60,6 @@ class Row(models.Model):
 class RoundRow(Row):
     roundNumber = models.ForeignKey(Round, related_name="rows", null=False, blank=False)
 
-class PlayerRow(Row):
+class PlayerRow(RoundRow):
     player = models.ForeignKey(Player, related_name="rows", null=False, blank=False)
+    competition = models.ForeignKey(Competition, related_name="rows", null=False, blank=False)
