@@ -3,7 +3,6 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from django.core.exceptions import ValidationError
 from app.models import *
 from app.serializers import *
 
@@ -29,9 +28,9 @@ class PlayerView(APIView):
         player = PlayerSerializer(data=request.data)
         if player.is_valid():
             player.save()
-            response = Response(player.data, status=status.HTTP_201_CREATED)
+            response = Response(player.data, status=201)
         else:
-            response = Response(player.errors, status=status.HTTP_404_NOT_FOUND)
+            response = Response(player.errors, status=400)
         return response
 
 class PlayerRowView(APIView):

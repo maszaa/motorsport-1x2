@@ -12,6 +12,7 @@ class Season(models.Model):
 
 class Team(models.Model):
     name = models.CharField(primary_key=True, max_length=128)
+    serie = models.ForeignKey(Serie, related_name="teams", null=False, blank=False)
 
 class SeasonTeam(Team):
     season = models.ForeignKey(Season, related_name="teams", null=False, blank=False)
