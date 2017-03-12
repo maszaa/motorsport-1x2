@@ -19,13 +19,15 @@ from app.views.player import *
 from app.views.serie import *
 from app.views.team import *
 from app.views.driver import *
+from app.views.season import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^series/', SerieView.as_view()),
-    url(r'^teams/', TeamView.as_view()),
-    url(r'^drivers/', DriverView.as_view()),
-    url(r'^player/row/', PlayerRowView.as_view()),
-    url(r'^player/', PlayerView.as_view()),
+    url(r'^api/series/', SerieView.as_view()),
+    url(r'^api/teams/', TeamView.as_view()),
+    url(r'^api/drivers/', DriverView.as_view()),
+    url(r'^api/seasons/', SeasonView.as_view()),
+    url(r'^api/player/row/', PlayerRowView.as_view()),
+    url(r'^api/player/', PlayerView.as_view()),
 
 ]

@@ -10,6 +10,9 @@ class Season(models.Model):
     year = models.IntegerField(null=False, blank=False, validators=[greaterThanZero])
     serie = models.ForeignKey(Serie, related_name="seasons", null=False, blank=False)
 
+    class Meta:
+        unique_together = (("year", "serie"))
+
 class Team(models.Model):
     name = models.CharField(primary_key=True, max_length=128)
     serie = models.ForeignKey(Serie, related_name="teams", null=False, blank=False)

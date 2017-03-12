@@ -19,5 +19,5 @@ class SerieView(APIView):
             serie.save()
             response = Response(serie.data, status=201)
         else:
-            response = Response(player.errors, status=400)
+            response = Response(serie.errors, status=400)
         return response
