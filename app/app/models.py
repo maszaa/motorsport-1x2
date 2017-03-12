@@ -21,6 +21,7 @@ class SeasonTeam(Team):
 class Driver(models.Model):
     name = models.CharField(primary_key=True, max_length=256)
     carNumber = models.IntegerField(validators=[greaterThanZero])
+    serie = models.ForeignKey(Serie, related_name="drivers", null=False, blank=False)
 
 class SeasonDriver(Driver):
     team = models.ForeignKey(SeasonTeam, related_name="drivers", null=False, blank=False)
