@@ -21,3 +21,18 @@ class CompetitionView(APIView):
         else:
             response = Response(competition.errors, status=400)
         return response
+
+class SeasonCompetitionView(APIView):
+    def get(self, request):
+        try:
+            if ("serie" and "season") in request.GET:
+                serie = Serie.objects.get(name=request.GET["serie"])
+                season = serie.seasons.get(year=request.GET["season"])
+                serializer = CompetitionSerializer(season.competitions.all(), many=True)
+                return Response(serializer.data, status=200)
+            else:
+                raise KeyError("This query requires parameters serie and season")
+        except KeyError as error:
+            return Response({"Error": str(error)}, status=400)
+        except Exception as error:
+            return Response({"Error": str(error)}, status=404)
