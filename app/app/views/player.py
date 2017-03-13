@@ -10,15 +10,15 @@ from app.serializers import *
 class PlayerView(APIView):
     def get(self, request):
         try:
-            if ("serie" and "season" and "competition" and "name") in request.GET:
-                serie = Serie.objects.get(name=request.GET["serie"])
-                season = serie.seasons.get(year=request.GET["season"])
+            if ("series" and "season" and "competition" and "name") in request.GET:
+                series = Series.objects.get(name=request.GET["series"])
+                season = series.seasons.get(year=request.GET["season"])
                 competition = season.competitions.get(name=request.GET["competition"])
                 player = competition.players.get(name=request.GET["name"])
                 serializer = PlayerSerializer(player, many=False)
                 return Response(serializer.data, status=200)
             else:
-                raise KeyError("This query requires parameters serie, season, competition and name")
+                raise KeyError("This query requires parameters series, season, competition and name")
         except KeyError as error:
             return Response({"Error": str(error)}, status=400)
         except Exception as error:
@@ -36,16 +36,16 @@ class PlayerView(APIView):
 class PlayerRowView(APIView):
     def get(self, request):
         try:
-            if ("serie" and "season" and "competition" and "name" and "round") in request.GET:
-                serie = Serie.objects.get(name=request.GET["serie"])
-                season = serie.seasons.get(year=request.GET["season"])
+            if ("series" and "season" and "competition" and "name" and "round") in request.GET:
+                series = Series.objects.get(name=request.GET["series"])
+                season = series.seasons.get(year=request.GET["season"])
                 competition = season.competitions.get(name=request.GET["competition"])
                 player = competition.players.get(name=request.GET["name"])
                 row = player.rows.filter(roundNumber=request.GET["round"])
                 serializer = PlayerRowSerializer(row, many=True)
                 return Response(serializer.data, status=200)
             else:
-                raise KeyError("This query requires parameters serie, season, competition, name and round")
+                raise KeyError("This query requires parameters series, season, competition, name and round")
         except KeyError as error:
             return Response({"Error": str(error)}, status=400)
         except Exception as error:

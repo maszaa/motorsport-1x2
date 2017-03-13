@@ -10,12 +10,12 @@ from app.serializers import *
 class SeasonView(APIView):
     def get(self, request):
         try:
-            if "serie" in request.GET:
-                serie = Serie.objects.get(name=request.GET["serie"])
-                serializer = SeasonSerializer(serie.seasons.all(), many=True)
+            if "series" in request.GET:
+                series = Series.objects.get(name=request.GET["series"])
+                serializer = SeasonSerializer(series.seasons.all(), many=True)
                 return Response(serializer.data, status=200)
             else:
-                raise KeyError("This query requires parameters serie")
+                raise KeyError("This query requires parameters series")
         except KeyError as error:
             return Response({"Error": str(error)}, status=400)
         except Exception as error:

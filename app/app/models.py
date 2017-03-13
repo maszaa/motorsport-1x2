@@ -3,15 +3,15 @@ from django.core.exceptions import ValidationError
 from app.validators import *
 
 
-class Serie(models.Model):
+class Series(models.Model):
     name = models.CharField(primary_key=True, max_length=64)
 
 class Season(models.Model):
     year = models.IntegerField(null=False, blank=False, validators=[greaterThanZero])
-    serie = models.ForeignKey(Serie, related_name="seasons", null=False, blank=False, on_delete=models.CASCADE)
+    series = models.ForeignKey(Series, related_name="seasons", null=False, blank=False, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = (("year", "serie"))
+        unique_together = (("year", "series"))
 
 class Team(models.Model):
     name = models.CharField(primary_key=True, max_length=128)

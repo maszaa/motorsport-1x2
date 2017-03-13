@@ -27,11 +27,11 @@ class SeasonSerializer(serializers.ModelSerializer):
         model = Season
         fields = "__all__"
 
-class SerieSerializer(serializers.ModelSerializer):
+class SeriesSerializer(serializers.ModelSerializer):
     seasons = SeasonSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Serie
+        model = Series
         fields = "__all__"
 
 class TeamSerializer(serializers.ModelSerializer):

@@ -7,17 +7,17 @@ from app.models import *
 from app.serializers import *
 
 
-class SerieView(APIView):
+class SeriesView(APIView):
     def get(self, request):
-        series = Serie.objects.all()
-        serializer = SerieSerializer(series, many=True)
+        series = Series.objects.all()
+        serializer = SeriesSerializer(series, many=True)
         return Response(serializer.data, status=200)
 
     def put(self, request):
-        serie = SerieSerializer(data=request.data)
-        if serie.is_valid():
-            serie.save()
-            response = Response(serie.data, status=201)
+        series = SeriesSerializer(data=request.data)
+        if series.is_valid():
+            series.save()
+            response = Response(series.data, status=201)
         else:
-            response = Response(serie.errors, status=400)
+            response = Response(series.errors, status=400)
         return response

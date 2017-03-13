@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from app.views.player import *
-from app.views.serie import *
+from app.views.series import *
 from app.views.team import *
 from app.views.driver import *
 from app.views.season import *
@@ -25,7 +25,7 @@ from app.views.documentation import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/series/', SerieView.as_view()),
+    url(r'^api/series/', SeriesView.as_view()),
     url(r'^api/teams/', TeamView.as_view()),
     url(r'^api/drivers/', DriverView.as_view()),
     url(r'^api/seasons/', SeasonView.as_view()),

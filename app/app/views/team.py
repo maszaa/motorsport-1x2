@@ -25,13 +25,13 @@ class TeamView(APIView):
 class SeasonTeamView(APIView):
     def get(self, request):
         try:
-            if ("serie" and "season") in request.GET:
-                serie = Serie.objects.get(name=request.GET["serie"])
-                season = serie.seasons.get(year=request.GET["season"])
+            if ("series" and "season") in request.GET:
+                series = Series.objects.get(name=request.GET["series"])
+                season = series.seasons.get(year=request.GET["season"])
                 serializer = SeasonTeamSerializer(season.teams.all(), many=True)
                 return Response(serializer.data, status=200)
             else:
-                raise KeyError("This query requires parameters serie and season")
+                raise KeyError("This query requires parameters series and season")
         except KeyError as error:
             return Response({"Error": str(error)}, status=400)
         except Exception as error:
