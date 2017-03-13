@@ -26,7 +26,7 @@ class TeamSerializer(serializers.ModelSerializer):
         model = Team
         fields = "__all__"
 
-class SeasonTeamSerializer(TeamSerializer):
+class SeasonTeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = SeasonTeam
         fields = "__all__"
@@ -36,7 +36,7 @@ class DriverSerializer(serializers.ModelSerializer):
         model = Driver
         fields = "__all__"
 
-class SeasonDriverSerializer(DriverSerializer):
+class SeasonDriverSerializer(serializers.ModelSerializer):
     class Meta:
         model = SeasonDriver
         fields = "__all__"
@@ -50,18 +50,13 @@ class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player
         fields = "__all__"
-"""
+
 class RowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Row
         fields = "__all__"
-"""
-class RoundRowSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RoundRow
-        fields = "__all__"
 
-class PlayerRowSerializer(RoundRowSerializer):
+class PlayerRowSerializer(RowSerializer):
     class Meta:
         model = PlayerRow
         fields = "__all__"
