@@ -9,17 +9,9 @@ from app.serializers import *
 
 class TeamView(APIView):
     def get(self, request):
-        try:
-            if "serie" in request.GET:
-                serie = Serie.objects.get(name=request.GET["serie"])
-                serializer = TeamSerializer(serie.teams.all(), many=True)
-                return Response(serializer.data, status=200)
-            else:
-                raise KeyError("This query requires parameters serie")
-        except KeyError as error:
-            return Response({"Error": str(error)}, status=400)
-        except Exception as error:
-            return Response({"Error": str(error)}, status=404)
+        teams = Team.objects.all()
+        serializer = TeamSerializer(teams, many=True)
+        return Response(serializer.data, status=200)
 
     def put(self, request):
         team = TeamSerializer(data=request.data)

@@ -9,17 +9,9 @@ from app.serializers import *
 
 class DriverView(APIView):
     def get(self, request):
-        try:
-            if "serie" in request.GET:
-                serie = Serie.objects.get(name=request.GET["serie"])
-                serializer = DriverSerializer(serie.drivers.all(), many=True)
-                return Response(serializer.data, status=200)
-            else:
-                raise KeyError("This query requires parameters serie")
-        except KeyError as error:
-            return Response({"Error": str(error)}, status=400)
-        except Exception as error:
-            return Response({"Error": str(error)}, status=404)
+        drivers = Driver.objects.all()
+        serializer = DriverSerializer(drivers, many=True)
+        return Response(serializer.data, status=200)
 
     def put(self, request):
         driver = DriverSerializer(data=request.data)
