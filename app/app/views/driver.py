@@ -24,7 +24,23 @@ class DriverView(APIView):
 
 class SeasonDriverView(APIView):
     def get(self, request):
-        return Response()
+        drivers = []
+        try:
+            if ("serie" and "season") in request.GET:
+                serie = Serie.objects.get(name=request.GET["serie"])
+                season = serie.seasons.get(year=request.GET["season"])
+                teams = season.teams.all()
+                for team in teams:
+                    teamDrivers = SeasonDriverSerializer(team.drivers.all(), many=True).data
+                    for driver in teamDrivers:
+                        drivers.append(driver)
+                return Response(drivers, status=200)
+            else:
+                raise KeyError("This query requires parameters serie and season")
+        except KeyError as error:
+            return Response({"Error": str(error)}, status=400)
+        except Exception as error:
+            return Response({"Error": str(error)}, status=404)
 
     def post(self, request):
         seasonDriver = SeasonDriverSerializer(data=request.data)

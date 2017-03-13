@@ -30,11 +30,11 @@ class Driver(models.Model):
 class SeasonDriver(models.Model):
     driver = models.ForeignKey(Driver, related_name="seasonsParticipated", null=False, blank=False, on_delete=models.CASCADE)
     team = models.ForeignKey(SeasonTeam, related_name="drivers", null=False, blank=False, on_delete=models.CASCADE)
-    carNumber = models.IntegerField(validators=[greaterThanZero])
+    carNumber = models.IntegerField(null=False, blank=False, validators=[greaterThanZero])
     runningOrder = models.IntegerField(null=False, blank=False, validators=[oneOrTwo])
 
     class Meta:
-        unique_together = (("team", "driver", "runningOrder"))
+        unique_together = (("team", "driver", "carNumber", "runningOrder"))
 
 class Round(models.Model):
     roundNumber = models.IntegerField(null=False, blank=False, validators=[greaterThanZero])
