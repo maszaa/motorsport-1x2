@@ -29,3 +29,16 @@ class TeamView(APIView):
         else:
             response = Response(team.errors, status=400)
         return response
+
+class SeasonTeamView(APIView):
+    def get(self, request):
+        return Response()
+
+    def post(self, request):
+        seasonTeam = SeasonTeamSerializer(data=request.data)
+        if seasonTeam.is_valid():
+            seasonTeam.save()
+            response = Response(seasonTeam.data, status=201)
+        else:
+            response = Response(seasonTeam.errors, status=400)
+        return response

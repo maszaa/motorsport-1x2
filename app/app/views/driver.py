@@ -29,3 +29,16 @@ class DriverView(APIView):
         else:
             response = Response(driver.errors, status=400)
         return response
+
+class SeasonDriverView(APIView):
+    def get(self, request):
+        return Response()
+
+    def post(self, request):
+        seasonDriver = SeasonDriverSerializer(data=request.data)
+        if seasonDriver.is_valid():
+            seasonDriver.save()
+            response = Response(seasonDriver.data, status=201)
+        else:
+            response = Response(seasonDriver.errors, status=400)
+        return response

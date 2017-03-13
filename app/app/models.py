@@ -15,12 +15,12 @@ class Season(models.Model):
 
 class Team(models.Model):
     name = models.CharField(primary_key=True, max_length=128)
-    serie = models.ForeignKey(Serie, related_name="teams", null=False, blank=False, on_delete=models.CASCADE)
+    #serie = models.ForeignKey(Serie, related_name="teams", null=False, blank=False, on_delete=models.CASCADE)
 
 class SeasonTeam(models.Model):
     team = models.ForeignKey(Team, related_name="seasonsParticipated", null=False, blank=False, on_delete=models.CASCADE)
     season = models.ForeignKey(Season, related_name="teams", null=False, blank=False, on_delete=models.CASCADE)
-    runningOrder = models.IntegerField(primary_key=True, validators=[greaterThanZero])
+    runningOrder = models.IntegerField(null=False, blank=False, validators=[greaterThanZero])
 
     class Meta:
         unique_together = (("team", "season", "runningOrder"))
@@ -28,7 +28,7 @@ class SeasonTeam(models.Model):
 class Driver(models.Model):
     name = models.CharField(primary_key=True, max_length=256)
     carNumber = models.IntegerField(validators=[greaterThanZero])
-    serie = models.ForeignKey(Serie, related_name="drivers", null=False, blank=False, on_delete=models.CASCADE)
+    #serie = models.ForeignKey(Serie, related_name="drivers", null=False, blank=False, on_delete=models.CASCADE)
 
 class SeasonDriver(models.Model):
     driver = models.ForeignKey(Driver, related_name="seasonsParticipated", null=False, blank=False, on_delete=models.CASCADE)

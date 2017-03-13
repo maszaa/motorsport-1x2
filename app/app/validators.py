@@ -15,5 +15,5 @@ def rowLengthIsCorrect(value):
             params={'value': rowLength})
 
 def oneOrTwo(value):
-    if value != 1 or value != 2:
+    if value != 1 and value != 2:
         raise ValidationError("Value of this integer must be 1 or 2!")

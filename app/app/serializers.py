@@ -7,8 +7,21 @@ class CompetitionSerializer(serializers.ModelSerializer):
         model = Competition
         fields = "__all__"
 
+class SeasonDriverSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SeasonDriver
+        fields = "__all__"
+
+class SeasonTeamSerializer(serializers.ModelSerializer):
+    drivers = SeasonDriverSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = SeasonTeam
+        fields = "__all__"
+
 class SeasonSerializer(serializers.ModelSerializer):
     competitions = CompetitionSerializer(many=True, read_only=True)
+    teams = SeasonTeamSerializer(many=True, read_only=True)
 
     class Meta:
         model = Season
@@ -26,19 +39,9 @@ class TeamSerializer(serializers.ModelSerializer):
         model = Team
         fields = "__all__"
 
-class SeasonTeamSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SeasonTeam
-        fields = "__all__"
-
 class DriverSerializer(serializers.ModelSerializer):
     class Meta:
         model = Driver
-        fields = "__all__"
-
-class SeasonDriverSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SeasonDriver
         fields = "__all__"
 
 class RoundSerializer(serializers.ModelSerializer):

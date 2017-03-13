@@ -28,6 +28,8 @@ urlpatterns = [
     url(r'^api/teams/', TeamView.as_view()),
     url(r'^api/drivers/', DriverView.as_view()),
     url(r'^api/seasons/', SeasonView.as_view()),
+    url(r'^api/season/team', SeasonTeamView.as_view()),
+    url(r'^api/season/driver', SeasonDriverView.as_view()),
     url(r'^api/player/row/', PlayerRowView.as_view()),
     url(r'^api/player/', PlayerView.as_view()),
 
