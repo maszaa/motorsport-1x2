@@ -44,16 +44,6 @@ class DriverSerializer(serializers.ModelSerializer):
         model = Driver
         fields = "__all__"
 
-class RoundSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Round
-        fields = "__all__"
-
-class PlayerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Player
-        fields = "__all__"
-
 class RowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Row
@@ -62,4 +52,18 @@ class RowSerializer(serializers.ModelSerializer):
 class PlayerRowSerializer(RowSerializer):
     class Meta:
         model = PlayerRow
+        fields = "__all__"
+
+class RoundSerializer(serializers.ModelSerializer):
+    rows = RowSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Round
+        fields = "__all__"
+
+class PlayerSerializer(serializers.ModelSerializer):
+    rows = PlayerRowSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Player
         fields = "__all__"

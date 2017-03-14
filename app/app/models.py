@@ -22,6 +22,7 @@ class SeasonTeam(models.Model):
     runningOrder = models.IntegerField(null=False, blank=False, validators=[greaterThanZero])
 
     class Meta:
+        ordering = ["runningOrder"]
         unique_together = (("team", "season", "runningOrder"))
 
 class Driver(models.Model):
@@ -34,12 +35,16 @@ class SeasonDriver(models.Model):
     runningOrder = models.IntegerField(null=False, blank=False, validators=[oneOrTwo])
 
     class Meta:
-        unique_together = (("team", "driver", "carNumber", "runningOrder"))
+        ordering = ["runningOrder"]
+        unique_together = (("team", "driver"))
 
 class Round(models.Model):
     roundNumber = models.IntegerField(null=False, blank=False, validators=[greaterThanZero])
     roundName = models.CharField(null=False, blank=False, max_length=256)
     season = models.ForeignKey(Season, related_name="rounds", null=False, blank=False, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = (("roundNumber", "season"))
 
 class Competition(models.Model):
     season = models.ForeignKey(Season, related_name="competitions", null=False, blank=False, on_delete=models.CASCADE)
@@ -63,7 +68,7 @@ class Row(models.Model):
     )
 
     row = models.CharField(null=False, blank=False, validators=[rowLengthIsCorrect], max_length=64)
-    rowType = models.CharField(null=False, blank=False, choices = ROW_CHOICES, default=RACE, max_length=1)
+    rowType = models.CharField(null=False, blank=False, choices=ROW_CHOICES, default=RACE, max_length=1)
     roundNumber = models.ForeignKey(Round, related_name="rows", null=False, blank=False, on_delete=models.CASCADE)
 
 class PlayerRow(Row):

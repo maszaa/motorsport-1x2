@@ -12,9 +12,9 @@ class ErgastQuerier(object):
 
         try:
             self.__qualificationUrl = "http://ergast.com/api/" + self.__series + "/" + \
-                self.__season + "/" + self.__roundNumber + "/qualifying.json"
+                str(self.__season) + "/" + str(self.__roundNumber) + "/qualifying.json"
             self.__raceUrl = "http://ergast.com/api/" + self.__series + "/" + \
-                self.__season + "/" + self.__roundNumber + "/results.json"
+                str(self.__season) + "/" + str(self.__roundNumber) + "/results.json"
 
 
             qualification = requests.get(self.__qualificationUrl)
