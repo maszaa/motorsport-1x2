@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
-import os
+import os, sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -130,3 +130,9 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     )
 }
+
+PROJECT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+HELPERS_DIR = os.path.abspath(os.path.join(PROJECT_DIR, '../helpers'))
+
+if HELPERS_DIR not in sys.path:
+    sys.path.insert(0, HELPERS_DIR)
