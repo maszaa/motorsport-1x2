@@ -1,4 +1,3 @@
-import requests
 from ergastquerier import *
 
 
@@ -27,6 +26,3 @@ class OneXTwo(ErgastQuerier):
 
     def getRaceRow(self):
         return self.__raceRow
-
-    def getQualificationResults(self):
-        return self.__raceResults
