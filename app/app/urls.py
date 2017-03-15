@@ -20,6 +20,7 @@ from app.views.series import *
 from app.views.team import *
 from app.views.driver import *
 from app.views.season import *
+from app.views.round import *
 from app.views.competition import *
 from app.views.documentation import *
 
@@ -32,6 +33,7 @@ urlpatterns = [
     url(r'^api/season/teams', SeasonTeamView.as_view()),
     url(r'^api/season/drivers', SeasonDriverView.as_view()),
     url(r'^api/season/competitions', SeasonCompetitionView.as_view()),
+    url(r'^api/season/rounds', RoundView.as_view()),
     url(r'^api/competitions', CompetitionView.as_view()),
     url(r'^api/player/row/', PlayerRowView.as_view()),
     url(r'^api/player/', PlayerView.as_view()),
