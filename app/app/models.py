@@ -76,6 +76,12 @@ class Row(models.Model):
 class RoundRow(Row):
     roundId = models.ForeignKey(Round, related_name="correctRows", null=False, blank=False, on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = (("roundId", "rowType"))
+
 class PlayerRow(Row):
     playerId = models.ForeignKey(Player, related_name="rows", null=False, blank=False, on_delete=models.CASCADE)
     roundId = models.ForeignKey(Round, related_name="playerRows", null=False, blank=False, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = (("playerId", "roundId", "rowType"))
