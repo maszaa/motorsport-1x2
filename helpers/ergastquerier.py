@@ -11,20 +11,19 @@ class ErgastQuerier(object):
         self.__roundNumber = roundNumber
 
         try:
-            self.__qualificationUrl = "http://ergast.com/api/" + self.__series + "/" + \
+            self.__qualifyingUrl = "http://ergast.com/api/" + self.__series + "/" + \
                 str(self.__season) + "/" + str(self.__roundNumber) + "/qualifying.json"
             self.__raceUrl = "http://ergast.com/api/" + self.__series + "/" + \
                 str(self.__season) + "/" + str(self.__roundNumber) + "/results.json"
 
-
-            qualification = requests.get(self.__qualificationUrl)
+            qualifying = requests.get(self.__qualifyingUrl)
             race = requests.get(self.__raceUrl)
 
-            if qualification.status_code != 200 or race.status_code != 200:
+            if qualifying.status_code != 200 or race.status_code != 200:
                 raise ValueError("Invalid series, season or roundNumber!")
 
             self.__roundName = race.json()["MRData"]["RaceTable"]["Races"][0]["raceName"]
-            self.__qualificationResults = qualification.json()["MRData"]["RaceTable"]["Races"][0]["QualifyingResults"]
+            self.__qualifyingResults = qualifying.json()["MRData"]["RaceTable"]["Races"][0]["QualifyingResults"]
             self.__raceResults = race.json()["MRData"]["RaceTable"]["Races"][0]["Results"]
 
         except (IndexError, ValueError):
@@ -32,8 +31,8 @@ class ErgastQuerier(object):
         except requests.ConnectionError:
             raise ErgastQuerierException("Problem with internet connection!")
 
-    def getQualificationResults(self):
-        return self.__qualificationResults
+    def getQualifyingResults(self):
+        return self.__qualifyingResults
 
     def getRaceResults(self):
         return self.__raceResults
