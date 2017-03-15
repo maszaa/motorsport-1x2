@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from app.models import *
 from app.serializers import *
+from app.helpers import *
 
 
 class PlayerView(APIView):
@@ -41,7 +42,7 @@ class PlayerRowView(APIView):
                 season = series.seasons.get(year=request.GET["season"])
                 competition = season.competitions.get(name=request.GET["competition"])
                 player = competition.players.get(name=request.GET["name"])
-                row = player.rows.filter(roundNumber=request.GET["round"])
+                rows = player.rows.filter(roundNumber=request.GET["round"])
                 serializer = PlayerRowSerializer(row, many=True)
                 return Response(serializer.data, status=200)
             else:
@@ -50,3 +51,17 @@ class PlayerRowView(APIView):
             return Response({"Error": str(error)}, status=400)
         except Exception as error:
             return Response({"Error": str(error)}, status=404)
+
+    def post(self, request):
+        data = request.data
+        rowIsCorrect, correctRowLength = rowLengthIsCorrect(len(data["row"]), data["roundId"])
+        if rowIsCorrect:
+            playerRow = PlayerRowSerializer(data=data)
+            if playerRow.is_valid():
+                playerRow.save()
+                response = Response(playerRow.data, status=201)
+            else:
+                response = Response(playerRow.errors, status=400)
+        else:
+            response = Response({"error": "Row length is incorrect, it must be " + str(correctRowLength) + "!"}, status=400)
+        return response

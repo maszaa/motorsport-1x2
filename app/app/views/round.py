@@ -44,14 +44,14 @@ class RoundView(APIView):
             raceRow = rowParser.getRaceRow()
 
             qualifyingRowData = {"row": qualifyingRow, "rowType": Row.QUALIFYING, "roundId": roundSerializer.data["id"]}
-            qualifyingRowSerializer = RowSerializer(data=qualifyingRowData)
+            qualifyingRowSerializer = RoundRowSerializer(data=qualifyingRowData)
             if qualifyingRowSerializer.is_valid():
                 qualifyingRowSerializer.save()
             else:
                 return Response(qualifyingRowSerializer.errors, status=400)
 
             raceRowData = {"row": raceRow, "rowType": Row.RACE, "roundId": roundSerializer.data["id"]}
-            raceRowSerializer = RowSerializer(data=raceRowData)
+            raceRowSerializer = RoundRowSerializer(data=raceRowData)
             if raceRowSerializer.is_valid():
                 raceRowSerializer.save()
             else:

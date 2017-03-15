@@ -49,13 +49,19 @@ class RowSerializer(serializers.ModelSerializer):
         model = Row
         fields = "__all__"
 
+class RoundRowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Row
+        fields = "__all__"
+
 class PlayerRowSerializer(RowSerializer):
     class Meta:
         model = PlayerRow
         fields = "__all__"
 
 class RoundSerializer(serializers.ModelSerializer):
-    rows = RowSerializer(many=True, read_only=True)
+    correctRows = RoundRowSerializer(many=True, read_only=True)
+    playerRows = RoundRowSerializer(many=True, read_only=True)
 
     class Meta:
         model = Round
