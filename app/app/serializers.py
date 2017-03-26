@@ -1,8 +1,29 @@
 from rest_framework import serializers
+from django.db.models import Sum, F, IntegerField
 from app.models import *
 
 
+class RoundRowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RoundRow
+        fields = "__all__"
+
+class PlayerRowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlayerRow
+        fields = "__all__"
+
+class PlayerSerializer(serializers.ModelSerializer):
+    rows = PlayerRowSerializer(many=True, read_only=True)
+    points = serializers.IntegerField()
+
+    class Meta:
+        model = Player
+        fields = "__all__"
+
 class CompetitionSerializer(serializers.ModelSerializer):
+    players = PlayerSerializer(many=True, read_only=True)
+
     class Meta:
         model = Competition
         fields = "__all__"
@@ -44,27 +65,10 @@ class DriverSerializer(serializers.ModelSerializer):
         model = Driver
         fields = "__all__"
 
-class RoundRowSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RoundRow
-        fields = "__all__"
-
-class PlayerRowSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PlayerRow
-        fields = "__all__"
-
 class RoundSerializer(serializers.ModelSerializer):
     correctRows = RoundRowSerializer(many=True, read_only=True)
     playerRows = RoundRowSerializer(many=True, read_only=True)
 
     class Meta:
         model = Round
-        fields = "__all__"
-
-class PlayerSerializer(serializers.ModelSerializer):
-    rows = PlayerRowSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Player
         fields = "__all__"

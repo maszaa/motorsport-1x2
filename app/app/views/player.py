@@ -3,6 +3,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from django.db.models import Sum, F, IntegerField
 from app.models import *
 from app.serializers import *
 from app.helpers import *
@@ -11,15 +12,15 @@ from app.helpers import *
 class PlayerView(APIView):
     def get(self, request):
         try:
-            if ("series" and "season" and "competition" and "name") in request.GET:
+            if ("series" and "season" and "competition") in request.GET:
                 series = Series.objects.get(name=request.GET["series"])
                 season = series.seasons.get(year=request.GET["season"])
                 competition = season.competitions.get(name=request.GET["competition"])
-                player = competition.players.get(name=request.GET["name"])
-                serializer = PlayerSerializer(player, many=False)
+                players = competition.players.annotate(points=Sum(F('qualifyingPoints') + F('racePoints'), output_field=IntegerField()))
+                serializer = PlayerSerializer(players, many=True)
                 return Response(serializer.data, status=200)
             else:
-                raise KeyError("This query requires parameters series, season, competition and name")
+                raise KeyError("This query requires parameters series, season and competition")
         except KeyError as error:
             return Response({"Error": str(error)}, status=400)
         except Exception as error:
@@ -54,8 +55,10 @@ class PlayerRowView(APIView):
 
     def post(self, request):
         data = request.data
+        data["row"] = cleanRow(data["row"])
         rowIsCorrect, correctRowLength = rowLengthIsCorrect(len(data["row"]), data["roundId"])
         if rowIsCorrect:
+            data["row"] = cleanRow(data["row"])
             playerRow = PlayerRowSerializer(data=data)
             if playerRow.is_valid():
                 playerRow.save()
