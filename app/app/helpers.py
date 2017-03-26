@@ -1,6 +1,11 @@
 from app.models import *
 
 
+def cleanRow(row):
+    allowedCharacters = ["1", "2", "X", "x"]
+    row = "".join(character for character in row if character in allowedChar).lower()
+    return row
+
 def rowLengthIsCorrect(rowLength, roundId):
     try:
         round_ = Round.objects.get(id=roundId)

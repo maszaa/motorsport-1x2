@@ -44,17 +44,12 @@ class DriverSerializer(serializers.ModelSerializer):
         model = Driver
         fields = "__all__"
 
-class RowSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Row
-        fields = "__all__"
-
 class RoundRowSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Row
+        model = RoundRow
         fields = "__all__"
 
-class PlayerRowSerializer(RowSerializer):
+class PlayerRowSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlayerRow
         fields = "__all__"
