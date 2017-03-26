@@ -17,7 +17,7 @@ class PlayerView(APIView):
                 season = series.seasons.get(year=request.GET["season"])
                 competition = season.competitions.get(name=request.GET["competition"])
                 players = competition.players.annotate(points=Sum(F('qualifyingPoints') + F('racePoints'), output_field=IntegerField()))
-                serializer = PlayerSerializer(players, many=True)
+                serializer = PlayerSerializer(players.order_by("-points", "-racePoints"), many=True)
                 return Response(serializer.data, status=200)
             else:
                 raise KeyError("This query requires parameters series, season and competition")

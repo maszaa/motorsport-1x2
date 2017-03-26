@@ -14,7 +14,7 @@ class PlayerRowSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class PlayerSerializer(serializers.ModelSerializer):
-    rows = PlayerRowSerializer(many=True, read_only=True)
+    rows = serializers.StringRelatedField(many=True)
     points = serializers.IntegerField()
 
     class Meta:
@@ -22,7 +22,7 @@ class PlayerSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class CompetitionSerializer(serializers.ModelSerializer):
-    players = PlayerSerializer(many=True, read_only=True)
+    players = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = Competition
@@ -34,15 +34,24 @@ class SeasonDriverSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class SeasonTeamSerializer(serializers.ModelSerializer):
-    drivers = SeasonDriverSerializer(many=True, read_only=True)
+    drivers = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = SeasonTeam
         fields = "__all__"
 
+class RoundSerializer(serializers.ModelSerializer):
+    correctRows = RoundRowSerializer(many=True, read_only=True)
+    playerRows = PlayerRowSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Round
+        fields = "__all__"
+
 class SeasonSerializer(serializers.ModelSerializer):
     competitions = CompetitionSerializer(many=True, read_only=True)
     teams = SeasonTeamSerializer(many=True, read_only=True)
+    rounds = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = Season
@@ -63,12 +72,4 @@ class TeamSerializer(serializers.ModelSerializer):
 class DriverSerializer(serializers.ModelSerializer):
     class Meta:
         model = Driver
-        fields = "__all__"
-
-class RoundSerializer(serializers.ModelSerializer):
-    correctRows = RoundRowSerializer(many=True, read_only=True)
-    playerRows = RoundRowSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Round
         fields = "__all__"

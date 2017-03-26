@@ -13,6 +13,9 @@ class Season(models.Model):
     class Meta:
         unique_together = (("year", "series"))
 
+    def __str__(self):
+        return '%d' % (self.year)
+
 class Team(models.Model):
     name = models.CharField(primary_key=True, max_length=128)
 
@@ -24,6 +27,9 @@ class SeasonTeam(models.Model):
     class Meta:
         ordering = ["runningOrder"]
         unique_together = (("team", "seasonId", "runningOrder"))
+
+    def __str__(self):
+        return '%d. %s' % (self.runningOrder, self.team.name)
 
 class Driver(models.Model):
     name = models.CharField(primary_key=True, max_length=256)
@@ -38,6 +44,9 @@ class SeasonDriver(models.Model):
         ordering = ["runningOrder"]
         unique_together = (("teamId", "driver"))
 
+    def __str__(self):
+        return '%s' % (self.driver.name)
+
 class Round(models.Model):
     roundNumber = models.IntegerField(null=False, blank=False, validators=[greaterThanNegative])
     roundName = models.CharField(null=False, blank=False, max_length=256)
@@ -46,6 +55,9 @@ class Round(models.Model):
     class Meta:
         unique_together = (("roundNumber", "seasonId"))
 
+    def __str__(self):
+        return '%d. %s' % (self.roundNumber, self.roundName)
+
 class Competition(models.Model):
     seasonId = models.ForeignKey(Season, related_name="competitions", null=False, blank=False, on_delete=models.CASCADE)
     name = models.CharField(null=False, blank=False, max_length=256)
@@ -53,11 +65,17 @@ class Competition(models.Model):
     class Meta:
         unique_together = (("seasonId", "name"))
 
+    def __str__(self):
+        return '%d: %s' % (self.seasonId.season, self.name)
+
 class Player(models.Model):
     name = models.CharField(unique=True, null=False, blank=False, max_length=256)
     qualifyingPoints = models.IntegerField(null=False, blank=False, default=0, validators=[greaterThanNegative])
     racePoints = models.IntegerField(null=False, blank=False, default=0, validators=[greaterThanNegative])
     competitionId = models.ForeignKey(Competition, related_name="players", null=False, blank=False, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return '%s' % (self.name)
 
 class Row(models.Model):
     QUALIFYING = "Qualifying"
@@ -79,6 +97,9 @@ class RoundRow(Row):
     class Meta:
         unique_together = (("roundId", "rowType"))
 
+    def __str__(self):
+        return '%d, %s: %s' % (self.roundId.roundNumer, self.rowType, self.row)
+
 class PlayerRow(Row):
     playerId = models.ForeignKey(Player, related_name="rows", null=False, blank=False, on_delete=models.CASCADE)
     competitionId = models.ForeignKey(Competition, related_name="rows", null=False, blank=False, on_delete=models.CASCADE)
@@ -87,3 +108,6 @@ class PlayerRow(Row):
 
     class Meta:
         unique_together = (("playerId", "roundId", "rowType"))
+
+    def __str__(self):
+        return '%d, %s: %s' % (self.roundId.roundNumber, self.rowType, self.row)
