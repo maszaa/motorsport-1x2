@@ -59,7 +59,8 @@ class PlayerRowView(APIView):
             playerRow = PlayerRowSerializer(data=data)
             if playerRow.is_valid():
                 playerRow.save()
-                response = Response(playerRow.data, status=201)
+                calculatePlayerPoints(data["playerId"], data["roundId"], data["rowType"])
+                response = Response(PlayerRowSerializer(PlayerRow.objects.filter(playerId=data["playerId"], roundId=data["roundId"]), many=True).data, status=201)
             else:
                 response = Response(playerRow.errors, status=400)
         else:

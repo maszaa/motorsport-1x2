@@ -81,7 +81,9 @@ class RoundRow(Row):
 
 class PlayerRow(Row):
     playerId = models.ForeignKey(Player, related_name="rows", null=False, blank=False, on_delete=models.CASCADE)
+    competitionId = models.ForeignKey(Competition, related_name="rows", null=False, blank=False, on_delete=models.CASCADE)
     roundId = models.ForeignKey(Round, related_name="playerRows", null=False, blank=False, on_delete=models.CASCADE)
+    pointsFromRow = models.IntegerField(null=False, blank=False, validators=[greaterThanNegative], default=0)
 
     class Meta:
         unique_together = (("playerId", "roundId", "rowType"))
