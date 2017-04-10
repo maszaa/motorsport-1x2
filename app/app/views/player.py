@@ -54,18 +54,21 @@ class PlayerRowView(APIView):
             return Response({"Error": str(error)}, status=404)
 
     def post(self, request):
-        data = request.data
-        data["row"] = cleanRow(data["row"])
-        rowIsCorrect, correctRowLength = rowLengthIsCorrect(len(data["row"]), data["roundId"])
-        if rowIsCorrect:
+        try:
+            data = request.data
             data["row"] = cleanRow(data["row"])
-            playerRow = PlayerRowSerializer(data=data)
-            if playerRow.is_valid():
-                playerRow.save()
-                calculatePlayerPoints(data["playerId"], data["roundId"], data["rowType"])
-                response = Response(PlayerRowSerializer(PlayerRow.objects.filter(playerId=data["playerId"], roundId=data["roundId"]), many=True).data, status=201)
+            rowIsCorrect, correctRowLength = rowLengthIsCorrect(len(data["row"]), data["roundId"])
+            if rowIsCorrect:
+                data["row"] = cleanRow(data["row"])
+                playerRow = PlayerRowSerializer(data=data)
+                if playerRow.is_valid():
+                    playerRow.save()
+                    calculatePlayerPoints(data["playerId"], data["roundId"], data["rowType"])
+                    response = Response(PlayerRowSerializer(PlayerRow.objects.filter(playerId=data["playerId"], roundId=data["roundId"]), many=True).data, status=201)
+                else:
+                    response = Response(playerRow.errors, status=400)
             else:
-                response = Response(playerRow.errors, status=400)
-        else:
-            response = Response({"error": "Row length is incorrect, it must be " + str(correctRowLength) + "!"}, status=400)
-        return response
+                response = Response({"error": "Row length is incorrect, it must be " + str(correctRowLength) + "!"}, status=400)
+            return response
+        except Exception as error:
+            return Response({"error": str(error)}, status=400)
