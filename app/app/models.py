@@ -66,7 +66,7 @@ class Competition(models.Model):
         unique_together = (("seasonId", "name"))
 
     def __str__(self):
-        return '%d: %s' % (self.seasonId.season, self.name)
+        return '%d: %s' % (self.seasonId.year, self.name)
 
 class Player(models.Model):
     name = models.CharField(unique=True, null=False, blank=False, max_length=256)
@@ -98,7 +98,7 @@ class RoundRow(Row):
         unique_together = (("roundId", "rowType"))
 
     def __str__(self):
-        return '%d, %s: %s' % (self.roundId.roundNumer, self.rowType, self.row)
+        return '%d, %s: %s' % (self.roundId.roundNumber, self.rowType, self.row)
 
 class PlayerRow(Row):
     playerId = models.ForeignKey(Player, related_name="rows", null=False, blank=False, on_delete=models.CASCADE)
@@ -110,4 +110,4 @@ class PlayerRow(Row):
         unique_together = (("playerId", "roundId", "rowType"))
 
     def __str__(self):
-        return '%d, %s: %s' % (self.roundId.roundNumber, self.rowType, self.row)
+        return '%s, %d, %s: %s' % (self.playerId.name, self.roundId.roundNumber, self.rowType, self.row)

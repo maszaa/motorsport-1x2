@@ -34,7 +34,7 @@ class SeasonDriverSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class SeasonTeamSerializer(serializers.ModelSerializer):
-    drivers = serializers.StringRelatedField(many=True)
+    drivers = SeasonDriverSerializer(many=True, read_only=True)
 
     class Meta:
         model = SeasonTeam
