@@ -66,7 +66,7 @@ class Competition(models.Model):
         unique_together = (("seasonId", "name"))
 
     def __str__(self):
-        return '%d: %s' % (self.seasonId.year, self.name)
+        return '%s' % (self.name)
 
 class Player(models.Model):
     name = models.CharField(unique=True, null=False, blank=False, max_length=256)

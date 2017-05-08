@@ -49,8 +49,8 @@ class RoundSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class SeasonSerializer(serializers.ModelSerializer):
-    competitions = CompetitionSerializer(many=True, read_only=True)
-    teams = SeasonTeamSerializer(many=True, read_only=True)
+    competitions = serializers.StringRelatedField(many=True)
+    teams = serializers.StringRelatedField(many=True)
     rounds = serializers.StringRelatedField(many=True)
 
     class Meta:
@@ -58,7 +58,6 @@ class SeasonSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class SeriesSerializer(serializers.ModelSerializer):
-    seasons = SeasonSerializer(many=True, read_only=True)
 
     class Meta:
         model = Series

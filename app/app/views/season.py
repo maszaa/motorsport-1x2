@@ -15,7 +15,9 @@ class SeasonView(APIView):
                 serializer = SeasonSerializer(series.seasons.all(), many=True)
                 return Response(serializer.data, status=200)
             else:
-                raise KeyError("This query requires parameters series")
+                seasons = Season.objects.all()
+                serializer = SeasonSerializer(seasons, many=True)
+                return Response(serializer.data, status=200)
         except KeyError as error:
             return Response({"Error": str(error)}, status=400)
         except Exception as error:
