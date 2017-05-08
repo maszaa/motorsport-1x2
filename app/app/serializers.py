@@ -23,6 +23,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 
 class CompetitionSerializer(serializers.ModelSerializer):
     players = serializers.StringRelatedField(many=True)
+    seasonId = serializers.StringRelatedField(many=False)
 
     class Meta:
         model = Competition
