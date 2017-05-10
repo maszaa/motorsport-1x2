@@ -110,4 +110,4 @@ class PlayerRow(Row):
         unique_together = (("playerId", "roundId", "rowType"))
 
     def __str__(self):
-        return '%s, %d, %s: %s' % (self.playerId.name, self.roundId.roundNumber, self.rowType, self.row)
+        return '%d;%s;%s' % (self.roundId.roundNumber, self.rowType, self.row)

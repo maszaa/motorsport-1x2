@@ -8,6 +8,15 @@ from app.serializers import *
 
 
 class CompetitionView(APIView):
+    def get(self, request, id):
+        try:
+            competition = Competition.objects.get(id=id)
+            serializer = CompetitionSerializer(competition, many=False)
+            return Response(serializer.data, status=200)
+        except Competition.DoesNotExist as error:
+            return Response({"Error": str(error)}, status=400)
+
+class CompetitionsView(APIView):
     def get(self, request):
         competitions = Competition.objects.all()
         serializer = CompetitionSerializer(competitions, many=True)
