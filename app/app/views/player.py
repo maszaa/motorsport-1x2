@@ -12,15 +12,17 @@ from app.helpers import *
 class PlayerView(APIView):
     def get(self, request):
         try:
-            if ("series" and "season" and "competition") in request.GET:
+            if "competitionId" in request.GET:
+                competition = Competition.objects.get(id=request.GET["competitionId"])
+            elif ("series" and "season" and "competition") in request.GET:
                 series = Series.objects.get(name=request.GET["series"])
                 season = series.seasons.get(year=request.GET["season"])
                 competition = season.competitions.get(name=request.GET["competition"])
-                players = competition.players.annotate(points=Sum(F('qualifyingPoints') + F('racePoints'), output_field=IntegerField()))
-                serializer = PlayerSerializer(players.order_by("-points", "-racePoints"), many=True)
-                return Response(serializer.data, status=200)
             else:
-                raise KeyError("This query requires parameters series, season and competition")
+                raise KeyError("This query requires either parameter competitionId or parameters series, season and competition")
+            players = competition.players.annotate(points=Sum(F('qualifyingPoints') + F('racePoints'), output_field=IntegerField()))
+            serializer = PlayerSerializer(players.order_by("-points", "-racePoints"), many=True)
+            return Response(serializer.data, status=200)
         except KeyError as error:
             return Response({"Error": str(error)}, status=400)
         except Exception as error:
