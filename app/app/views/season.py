@@ -6,8 +6,16 @@ from rest_framework import status
 from app.models import *
 from app.serializers import *
 
-
 class SeasonView(APIView):
+    def get(self, request, id):
+        try:
+            season = Season.objects.get(id=id)
+            serializer = SeasonSerializer(season, many=False)
+            return Response(serializer.data, status=200)
+        except Season.DoesNotExist as error:
+            return Response({"Error": str(error)}, status=404)
+
+class SeriesSeasonView(APIView):
     def get(self, request):
         try:
             if "series" in request.GET:
