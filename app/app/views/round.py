@@ -32,7 +32,7 @@ class RoundView(APIView):
             teamsDrivers = SeasonTeamSerializer(season.teams.all(), many=True).data
             rowParser = OneXTwo(data["series"], data["season"], data["round"], teamsDrivers)
 
-            roundData = {"seasonId": season.id, "roundNumber": data["round"], "roundName": rowParser.getRoundName()}
+            roundData = {"season": season.id, "roundNumber": data["round"], "roundName": rowParser.getRoundName()}
 
             roundSerializer = RoundSerializer(data=roundData)
             if roundSerializer.is_valid():
@@ -43,14 +43,14 @@ class RoundView(APIView):
             qualifyingRow = rowParser.getQualifyingRow()
             raceRow = rowParser.getRaceRow()
 
-            qualifyingRowData = {"row": qualifyingRow, "rowType": Row.QUALIFYING, "roundId": roundSerializer.data["id"]}
+            qualifyingRowData = {"row": qualifyingRow, "rowType": Row.QUALIFYING, "round": roundSerializer.data["id"]}
             qualifyingRowSerializer = RoundRowSerializer(data=qualifyingRowData)
             if qualifyingRowSerializer.is_valid():
                 qualifyingRowSerializer.save()
             else:
                 return Response(qualifyingRowSerializer.errors, status=400)
 
-            raceRowData = {"row": raceRow, "rowType": Row.RACE, "roundId": roundSerializer.data["id"]}
+            raceRowData = {"row": raceRow, "rowType": Row.RACE, "round": roundSerializer.data["id"]}
             raceRowSerializer = RoundRowSerializer(data=raceRowData)
             if raceRowSerializer.is_valid():
                 raceRowSerializer.save()
