@@ -14,24 +14,24 @@ class PlayerRowSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class PlayerSerializer(serializers.ModelSerializer):
-    rows = serializers.StringRelatedField(many=True)
-    points = serializers.IntegerField()
+    rows = serializers.StringRelatedField(many=True, read_only=True)
+    points = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Player
         fields = "__all__"
 
 class SeasonSerializer(serializers.ModelSerializer):
-    competitions = serializers.StringRelatedField(many=True)
-    teams = serializers.StringRelatedField(many=True)
-    rounds = serializers.StringRelatedField(many=True)
+    competitions = serializers.StringRelatedField(many=True, read_only=True)
+    teams = serializers.StringRelatedField(many=True, read_only=True)
+    rounds = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Season
         fields = "__all__"
 
 class CompetitionSerializer(serializers.ModelSerializer):
-    players = serializers.StringRelatedField(many=True)
+    players = serializers.StringRelatedField(many=True, read_only=True)
     season = SeasonSerializer(many=False, read_only=True)
 
     class Meta:
