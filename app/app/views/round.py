@@ -7,18 +7,19 @@ from app.models import *
 from app.serializers import *
 from parsers.onextwo import *
 
-
-class RoundView(APIView):
+class RoundsView(APIView):
     def get(self, request):
         try:
-            if ("series" and "season" and "round") in request.GET:
+            if "seasonId" in request.GET:
+                rounds = Round.objects.filter(season=request.GET["seasonId"])
+            elif ("series" and "season") in request.GET:
                 series = Series.objects.get(name=request.GET["series"])
                 season = series.seasons.get(year=request.GET["season"])
-                rounds = season.rounds.get(roundNumber=request.GET["round"])
-                serializer = RoundSerializer(rounds, many=False)
-                return Response(serializer.data, status=200)
+                rounds = season.rounds.all()
             else:
-                raise KeyError("This query requires parameters series, season and round")
+                raise KeyError("This query requires either parameter seasonId or parameters series and season (year)")
+            serializer = RoundSerializer(rounds, many=True)
+            return Response(serializer.data, status=200)
         except KeyError as error:
             return Response({"Error": str(error)}, status=400)
         except Exception as error:
