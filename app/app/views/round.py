@@ -7,6 +7,15 @@ from app.models import *
 from app.serializers import *
 from parsers.onextwo import *
 
+class RoundView(APIView):
+    def get(self, request, id):
+        try:
+            round_ = Round.objects.get(id=id)
+            serializer = RoundSerializer(round_, many=False)
+            return Response(serializer.data, status=200)
+        except Round.DoesNotExist as error:
+            return Response({"Error": str(error)}, status=400)
+
 class RoundsView(APIView):
     def get(self, request):
         try:
