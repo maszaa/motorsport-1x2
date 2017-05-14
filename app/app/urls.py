@@ -37,9 +37,9 @@ urlpatterns = [
     url(r'^api/season/rounds', RoundsView.as_view()),
     url(r'^api/competitions/([0-9]+)', CompetitionView.as_view()),
     url(r'^api/competitions', CompetitionsView.as_view()),
+    url(r'^api/players/rows/', PlayerRowsView.as_view()),
     url(r'^api/players/', PlayerView.as_view()),
     url(r'^api/player/row/', PlayerRowView.as_view()),
 
     url(r'^documentation/api', DocumentationView.as_view()),
-
 ]

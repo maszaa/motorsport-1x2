@@ -74,3 +74,17 @@ class PlayerRowView(APIView):
             return response
         except Exception as error:
             return Response({"error": str(error)}, status=400)
+
+class PlayerRowsView(APIView):
+    def get(self, request):
+        try:
+            if ("competitionId" and "roundId") in request.GET:
+                rows = PlayerRow.objects.filter(competition=request.GET["competitionId"], round=request.GET["roundId"])
+                serializer = PlayerRowSerializer(rows, many=True)
+                return Response(serializer.data, status=200)
+            else:
+                raise KeyError("This query requires parameters competitionId and roundId")
+        except KeyError as error:
+            return Response({"Error": str(error)}, status=400)
+        except Exception as error:
+            return Response({"Error": str(error)}, status=404)
