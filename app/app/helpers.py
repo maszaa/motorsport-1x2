@@ -9,7 +9,7 @@ def cleanRow(row):
 def rowLengthIsCorrect(rowLength, roundId):
     try:
         round_ = Round.objects.get(id=roundId)
-        correctRowLength = round_.seasonId.teams.all().count()
+        correctRowLength = round_.season.teams.all().count()
         print(correctRowLength, rowLength)
         if rowLength == correctRowLength:
             return True, correctRowLength
@@ -21,8 +21,8 @@ def rowLengthIsCorrect(rowLength, roundId):
 def calculatePlayerPoints(playerId, roundId, rowType):
     try:
         player = Player.objects.get(id=playerId)
-        roundRow = RoundRow.objects.get(roundId=roundId, rowType=rowType)
-        playerRow = PlayerRow.objects.get(playerId=playerId, roundId=roundId, rowType=rowType)
+        roundRow = RoundRow.objects.get(round=roundId, rowType=rowType)
+        playerRow = PlayerRow.objects.get(player=playerId, round=roundId, rowType=rowType)
         points = 0
 
         for roundChar, playerChar in zip(roundRow.row, playerRow.row):

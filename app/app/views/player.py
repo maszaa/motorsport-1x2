@@ -59,14 +59,14 @@ class PlayerRowView(APIView):
         try:
             data = request.data
             data["row"] = cleanRow(data["row"])
-            rowIsCorrect, correctRowLength = rowLengthIsCorrect(len(data["row"]), data["roundId"])
+            rowIsCorrect, correctRowLength = rowLengthIsCorrect(len(data["row"]), data["round"])
             if rowIsCorrect:
                 data["row"] = cleanRow(data["row"])
                 playerRow = PlayerRowSerializer(data=data)
                 if playerRow.is_valid():
                     playerRow.save()
-                    calculatePlayerPoints(data["playerId"], data["roundId"], data["rowType"])
-                    response = Response(PlayerRowSerializer(PlayerRow.objects.filter(playerId=data["playerId"], roundId=data["roundId"]), many=True).data, status=201)
+                    calculatePlayerPoints(data["player"], data["round"], data["rowType"])
+                    response = Response(PlayerRowSerializer(PlayerRow.objects.get(player=data["player"], round=data["round"], rowType=data["rowType"]), many=False).data, status=201)
                 else:
                     response = Response(playerRow.errors, status=400)
             else:
